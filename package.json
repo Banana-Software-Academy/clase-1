@@ -1,0 +1,22 @@
+{
+  "name": "craneando-software-clase-1",
+  "version": "1.0.0",
+  "description": "Craneando Software - Clase 1 - Probando ambiente",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx testy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Banana-Software-Academy/clase-1.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Banana-Software-Academy/clase-1/issues"
+  },
+  "homepage": "https://github.com/Banana-Software-Academy/clase-1#readme",
+  "devDependencies": {
+    "@pmoo/testy": "^5.1.0"
+  }
+}
