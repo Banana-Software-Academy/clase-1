@@ -2,6 +2,7 @@ const { suite, test, assert } = require('@pmoo/testy');
 
 const Product =  require('../src/Product');
 const Catalog = require('../src/Catalog');
+const Sale = require('../src/Sale');
 
 suite('Producto' , () => {
   test('Podemos crear un producto con un nombre', () => {
@@ -51,12 +52,6 @@ suite('Producto' , () => {
   //   assert.that(error).isEqualTo('INVALID_COST');
   // });
 
-  // test('Un producto puede decirme su precio si le asigno la rentabilidad esperada', () => {
-  //   const candle = new Product('Vela', 120);
-  //   candle.profitabilityPercentageOf(50);
-  //   assert.that(candle.price()).isEqualTo(180);
-  // });
-
   // test('Puedo listar mis productos en el formato [Nombre]:[Precio] separados por coma', () => {
   //   const smallCandle = new Product('Vela', 120);
   //   smallCandle.profitabilityPercentageOf(50);
@@ -70,11 +65,42 @@ suite('Producto' , () => {
     const candle = new Product('Vela', 100);
     const bigCandle = new Product('Vela xl', 200);
 
-    const products = [candle, bigCandle];
+    const products = new Array(candle, bigCandle);
 
     const catalog = new Catalog(products);
-    assert.that(catalog.productQuantity()).isEqualTo(products.length);
+    assert.that(catalog.productQuantity()).isEqualTo(2);
   });
 
-  // test('Puedo crear una venta de un producto y conocer su valor total');
+  test('Un producto puede decirme su precio si le asigno la rentabilidad esperada', () => {
+    const candle = new Product('Vela', 120);
+    candle.profitabilityPercentageOf(50);
+    assert.that(candle.price()).isEqualTo(180);
+  });
+
+  test('Puedo crear una venta de dos productos y conocer su valor total', () => {
+    const candle = new Product('Vela', 100);
+    candle.profitabilityPercentageOf(50);
+    const bigCandle = new Product('Vela xl', 200);
+    bigCandle.profitabilityPercentageOf(50);
+
+    const cart = new Array();
+    cart.push(candle);
+    cart.push(bigCandle);
+
+    const sale = new Sale('Pepe', cart);
+
+    assert.that(sale.totalValue()).isEqualTo(candle.price() + bigCandle.price())
+  });
+
+  test('Puedo crear una venta de un producto y conocer su valor total', () => {
+    const candle = new Product('Vela', 100);
+    candle.profitabilityPercentageOf(50);
+
+    const cart = new Array();
+    cart.push(candle);
+
+    const sale = new Sale('Pepe', cart);
+    
+    assert.that(sale.totalValue()).isEqualTo(candle.price());
+  });
 });
