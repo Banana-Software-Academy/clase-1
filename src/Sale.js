@@ -8,12 +8,15 @@ class Sale {
   totalValue() {
     let total = 0;
     this.cart.forEach((aProduct) => {
-      total = total + aProduct.price();
+      total = this.addPriceToTotal(total, aProduct);
     });
     return total;
   }
 
-
+  addPriceToTotal(aTotal, aProduct) {
+    aTotal = aTotal + aProduct.price();
+    return aTotal;
+  }
 }
 
 module.exports = Sale;
