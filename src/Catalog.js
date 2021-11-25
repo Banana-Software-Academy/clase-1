@@ -8,16 +8,23 @@ class Catalog {
     return this.products.length;
   }
 
-  findProductByName(aProductName) {
-    let productFound;
+  findProductByName(aName) {
+    let itemFound;
     
-    this.products.forEach((aProduct) => {
-      if(aProduct.isNamed(aProductName)) {
-        productFound = aProduct;
+    this.products.forEach((item) => {
+      if(item.isNamed(aName)) {
+        itemFound = item;
       }  
     });
 
-    return productFound;
+    this.assertProductWasFound(itemFound);
+    return itemFound;
+  }
+
+  assertProductWasFound(productFound) {
+    if (productFound == undefined) {
+      throw new Error('PRODUCT_NOT_FOUND');
+    }
   }
 }
 

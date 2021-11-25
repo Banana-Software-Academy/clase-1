@@ -1,8 +1,8 @@
 const { suite, test, assert } = require('@pmoo/testy');
 const Product =  require('../src/Product');
 const Catalog = require('../src/Catalog');
-// const Sale = require('../src/Sale');
 const Store = require('../src/Store');
+const Gift = require('../src/Gift');
 
 suite('Store', () => {
   // Crear un catálogo
@@ -38,14 +38,81 @@ suite('Store', () => {
     assert.that(store.numberOfSales()).isEqualTo(2);
   });
 
-  test('Quiero comprar un producto que no existe, y ..... qué pasa?', () => {
+  test('Store lanza PRODUCT_NOT_FOUND si intento vender un producto que no existe', () => {
+    let error;
     const catalog = generateCatalogWithAProduct();
     const store = new Store(catalog);
 
-    store.sellProductNamed('Vela234');
+    try {
+      store.sellProductNamed('Vela234');
+    } catch (anError) {
+      error = anError.message;
+    }
 
+    assert.that(error).isEqualTo('PRODUCT_NOT_FOUND');
     assert.that(store.numberOfSales()).isEqualTo(0);
   });
+
+  test('Puedo vender productos y regalos', () => {
+    const aGift = new Gift('Regalito', 100);
+    const candle = new Product('Vela', 100);
+
+    const items = [aGift, candle];
+    const catalog = new Catalog(items);
+    const store = new Store(catalog);
+
+    store.sellProductNamed('Regalito');
+
+    assert.that(store.numberOfSales()).isEqualTo(1);
+    assert.that(store.totalEarn()).isEqualTo(0);
+  });
+
+  test('Las ventas de regalos no suman ingresos', () => {
+    const aGift = new Gift('Regalito', 100);
+    const candle = new Product('Vela', 100);
+    candle.profitabilityPercentageOf(50);
+    
+    const items = [aGift, candle];
+    const catalog = new Catalog(items);
+    const store = new Store(catalog);
+
+    store.sellProductNamed('Regalito');
+    store.sellProductNamed('Vela');
+
+    assert.that(store.numberOfSales()).isEqualTo(2);
+    assert.that(store.totalEarn()).isEqualTo(candle.price() + aGift.price());
+  });
+
+    test('Puedo vender más de un producto', () => {
+      const bigCandle = new Product('Vela XL', 150);
+      bigCandle.profitabilityPercentageOf(50);
+      const candle = new Product('Vela', 100);
+      candle.profitabilityPercentageOf(50);
+      
+      const catalog = new Catalog([bigCandle, candle]);
+      const store = new Store(catalog);
+
+      const productNamesToBuy = ['Vela XL', 'Vela'];
+      store.sellProductsNamed(productNamesToBuy);
+
+      assert.that(store.numberOfSales()).isEqualTo(1);
+      assert.that(store.totalEarn()).isEqualTo(candle.price() + bigCandle.price());
+    });
+
+    test('Qué pasa si intento vender más de un producto y uno no existe en el catálogo', () => {
+      const bigCandle = new Product('Vela XL', 150);
+      bigCandle.profitabilityPercentageOf(50);
+      const candle = new Product('Vela', 100);
+      candle.profitabilityPercentageOf(50);
+      
+      const catalog = new Catalog([bigCandle, candle]);
+      const store = new Store(catalog);
+
+      const productNamesToBuy = ['Vela XL', 'Pelota'];
+      store.sellProductsNamed(productNamesToBuy);
+
+      assert.that(store.numberOfSales()).isEqualTo(0);
+    });
 });
 
 function generateCatalogWithAProduct() {
