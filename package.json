@@ -4,6 +4,7 @@
   "description": "Craneando Software - Clase 1 - Probando ambiente",
   "main": "index.js",
   "scripts": {
+    "start": "node src/index",
     "test": "npx testy"
   },
   "repository": {
@@ -18,5 +19,8 @@
   "homepage": "https://github.com/Banana-Software-Academy/clase-1#readme",
   "devDependencies": {
     "@pmoo/testy": "^5.1.0"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
   }
 }
