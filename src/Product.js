@@ -31,6 +31,15 @@ class Product {
   inListFormat() {
     return this.name + ': ' + this.price();
   }
+
+  toSend() {
+    const toJsonProduct = {
+      name: this.name,
+      cost: this.cost,
+      price: this.price()
+    };
+    return toJsonProduct;
+  }
 }
 
 module.exports = Product;

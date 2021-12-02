@@ -108,10 +108,32 @@ suite('Store', () => {
       const catalog = new Catalog([bigCandle, candle]);
       const store = new Store(catalog);
 
-      const productNamesToBuy = ['Vela XL', 'Pelota'];
-      store.sellProductsNamed(productNamesToBuy);
-
+      const productNamesToSell = ['Vela XL', 'Pelota'];
+      let error;
+      try {
+        store.sellProductsNamed(productNamesToSell);
+      } catch(e) {
+        error = e.message;
+      }
       assert.that(store.numberOfSales()).isEqualTo(0);
+      assert.that(error).isEqualTo('PRODUCT_NOT_FOUND');
+    });
+
+    test('....', () => {
+      const bigCandle = new Product('Vela XL', 150);
+      bigCandle.profitabilityPercentageOf(100);
+      const candle = new Product('Vela', 100);
+      candle.profitabilityPercentageOf(100);
+      
+      const catalog = new Catalog([bigCandle, candle]);
+      const store = new Store(catalog);
+
+      const jsonCatalogToSend = store.jsonCatalog();
+
+      assert.that(jsonCatalogToSend).isEqualTo(JSON.stringify([
+        {name: 'Vela XL', cost: 150, price: bigCandle.price()},
+        {name: 'Vela', cost: 100, price: candle.price()},
+      ]))
     });
 });
 

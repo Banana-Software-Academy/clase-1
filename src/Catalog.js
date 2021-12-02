@@ -26,6 +26,14 @@ class Catalog {
       throw new Error('PRODUCT_NOT_FOUND');
     }
   }
+
+  toSend() {
+    let productsToSend = [];
+    this.products.forEach((product) => {
+      productsToSend.push(product.toSend())
+    });
+    return productsToSend;
+  }
 }
 
 module.exports = Catalog;

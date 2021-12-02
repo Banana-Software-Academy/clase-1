@@ -45,6 +45,10 @@ class Store {
 
     this.createSaleWithCart(aCart);
   }
+
+  jsonCatalog() {
+    return JSON.stringify(this._catalog.toSend());
+  }
 }
 
 module.exports = Store;
